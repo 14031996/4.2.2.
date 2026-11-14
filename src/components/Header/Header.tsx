@@ -1,20 +1,15 @@
-import { useContext } from "react";
 import { Button, Popover } from "@mantine/core";
 import { IconShoppingCart } from "@tabler/icons-react";
-import { BasketContext } from "../../context/BasketContext";
+import { useTypedSelector } from "../../hooks/redux";
 import Cart from "../Cart/Cart";
 import Style from "./Header.style.module.scss";
 
 const Header = () => {
-  const basket = useContext(BasketContext);
-
-  if (basket === null) {
-    return null;
-  }
+  const products = useTypedSelector((state) => state.basket.products);
 
   let totalQuantity = 0;
 
-  for (const product of basket.products) {
+  for (const product of products) {
     totalQuantity += product.quantity;
   }
 

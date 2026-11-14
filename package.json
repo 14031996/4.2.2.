@@ -17,9 +17,11 @@
     "@fontsource/open-sans": "^5.3.0",
     "@mantine/core": "^9.7.3",
     "@mantine/hooks": "^9.7.3",
+    "@reduxjs/toolkit": "^2.14.0",
     "@tabler/icons-react": "^3.49.0",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "react-redux": "^9.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

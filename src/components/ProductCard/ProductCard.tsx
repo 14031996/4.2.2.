@@ -1,8 +1,9 @@
-import { useContext, useState } from "react";
 import { Button } from "@mantine/core";
 import { IconShoppingCart } from "@tabler/icons-react";
 import type { Product } from "../../types/Product";
-import { BasketContext } from "../../context/BasketContext";
+import { useTypedDispatch, useTypedSelector } from "../../hooks/redux";
+import { addProduct } from "../../store/reducers/BasketSlice";
+import { changeProductQuantity } from "../../store/reducers/ProductSlice";
 import CountCounter from "../CountCounter/CountCounter";
 import Style from "./ProductCard.style.module.scss";
 
@@ -11,20 +12,30 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const [quantity, setQuantity] = useState(1);
-  const basket = useContext(BasketContext);
+  const dispatch = useTypedDispatch();
+
+  const quantity = useTypedSelector(
+    (state) => state.products.quantities[product.id] ?? 1,
+  );
+
   const [name, weight] = product.name.split(" - ");
 
-  if (basket === null) {
-    return null;
-  }
+  const handleChangeQuantity = (quantity: number) => {
+    dispatch(
+      changeProductQuantity({
+        id: product.id,
+        quantity,
+      }),
+    );
+  };
 
   const handleAddToCart = () => {
-    if (basket === null) {
-      return;
-    }
-
-    basket.addProduct(product, quantity);
+    dispatch(
+      addProduct({
+        product,
+        quantity,
+      }),
+    );
   };
 
   return (
@@ -42,7 +53,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           {weight && <span className={Style["product-weight"]}>{weight}</span>}
         </div>
 
-        <CountCounter quantity={quantity} onChange={setQuantity} />
+        <CountCounter quantity={quantity} onChange={handleChangeQuantity} />
       </div>
 
       <div className={Style["product-bottom"]}>

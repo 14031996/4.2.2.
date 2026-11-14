@@ -1,37 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Loader } from "@mantine/core";
-import type { Product } from "../../types/Product";
+import { useTypedDispatch, useTypedSelector } from "../../hooks/redux";
+import { fetchProducts } from "../../store/thunks/ProductThunks";
 import ProductCard from "../ProductCard/ProductCard";
 import Style from "./Catalog.style.module.scss";
 
 const Catalog = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const dispatch = useTypedDispatch();
+
+  const { products, loading, error } = useTypedSelector(
+    (state) => state.products,
+  );
 
   useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const response = await fetch(
-          "https://res.cloudinary.com/sivadass/raw/upload/v1535817394/json/products.json",
-        );
-
-        if (!response.ok) {
-          throw new Error("Не удалось загрузить товары");
-        }
-
-        const data: Product[] = await response.json();
-
-        setProducts(data);
-      } catch {
-        setError("Не удалось загрузить товары. Обновите страницу.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadProducts();
-  }, []);
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   let content;
 

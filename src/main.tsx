@@ -1,6 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
 import { MantineProvider } from "@mantine/core";
+import { store } from "./store/store";
 import "@mantine/core/styles.css";
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
@@ -11,8 +13,10 @@ import App from "./App.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <MantineProvider theme={{ fontFamily: "Inter, sans-serif" }}>
-      <App />
-    </MantineProvider>
+    <Provider store={store}>
+      <MantineProvider theme={{ fontFamily: "Inter, sans-serif" }}>
+        <App />
+      </MantineProvider>
+    </Provider>
   </StrictMode>,
 );

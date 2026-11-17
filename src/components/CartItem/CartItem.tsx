@@ -43,6 +43,7 @@ const CartItem = ({ product }: CartItemProps) => {
           <CountCounter
             quantity={product.quantity}
             onChange={handleChangeQuantity}
+            min={0}
           />
         </div>
       </div>

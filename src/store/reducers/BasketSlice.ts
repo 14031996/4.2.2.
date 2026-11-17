@@ -39,12 +39,18 @@ const basketSlice = createSlice({
     },
 
     changeQuantity: (state, action: PayloadAction<ChangeQuantityPayload>) => {
-      const product = state.products.find(
-        (item) => item.id === action.payload.id,
-      );
+      const { id, quantity } = action.payload;
+
+      if (quantity === 0) {
+        state.products = state.products.filter((item) => item.id !== id);
+
+        return;
+      }
+
+      const product = state.products.find((item) => item.id === id);
 
       if (product) {
-        product.quantity = action.payload.quantity;
+        product.quantity = quantity;
       }
     },
   },

@@ -4,11 +4,14 @@ import Style from "./CountCounter.style.module.scss";
 type CountCounterProps = {
   quantity: number;
   onChange: (value: number) => void;
+  min?: number;
 };
 
-const CountCounter = ({ quantity, onChange }: CountCounterProps) => {
+const CountCounter = ({ quantity, onChange, min = 1 }: CountCounterProps) => {
   const handleDecrease = () => {
-    onChange(quantity - 1);
+    if (quantity > min) {
+      onChange(quantity - 1);
+    }
   };
 
   const handleIncrease = () => {
@@ -18,7 +21,7 @@ const CountCounter = ({ quantity, onChange }: CountCounterProps) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
 
-    if (value >= 1 && Number.isInteger(value)) {
+    if (value >= min && Number.isInteger(value)) {
       onChange(value);
     }
   };
@@ -28,7 +31,7 @@ const CountCounter = ({ quantity, onChange }: CountCounterProps) => {
       <button
         type="button"
         onClick={handleDecrease}
-        disabled={quantity === 1}
+        disabled={quantity <= min}
         aria-label="Уменьшить количество"
       >
         −
@@ -36,7 +39,7 @@ const CountCounter = ({ quantity, onChange }: CountCounterProps) => {
 
       <input
         type="number"
-        min={1}
+        min={min}
         step={1}
         value={quantity}
         aria-label="Количество товара"
